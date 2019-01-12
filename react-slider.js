@@ -733,7 +733,7 @@
         alignValue += (valModStep > 0) ? props.step : (-props.step);
       }
 
-      return parseFloat(alignValue.toFixed(5));
+      return parseFloat(alignValue.toFixed(6));
     },
 
     _renderHandle: function (style, child, i) {
