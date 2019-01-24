@@ -185,6 +185,7 @@
         orientation: 'horizontal',
         className: 'slider',
         handleClassName: 'handle',
+        handlesStyles: [],
         handleActiveClassName: 'active',
         barClassName: 'bar',
         withBars: false,
@@ -334,19 +335,31 @@
       var style = {
         position: 'absolute',
         willChange: this.state.index >= 0 ? this._posMinKey() : '',
-        zIndex: this.state.zIndices.indexOf(i) + 1
+        zIndex: this.state.zIndices.indexOf(i) + 1,
       };
       style[this._posMinKey()] = offset + 'px';
+      var additionalStyles = this.props.handleStyles;
+      if (additionalStyles && additionalStyles[i]) {
+        Object.keys(additionalStyles[i]).forEach(function(option) {
+          style[option] = additionalStyles[i][option];
+        })
+      }
       return style;
     },
 
-    _buildBarStyle: function (min, max) {
+    _buildBarStyle: function (i, min, max) {
       var obj = {
         position: 'absolute',
         willChange: this.state.index >= 0 ? this._posMinKey() + ',' + this._posMaxKey() : ''
       };
       obj[this._posMinKey()] = min;
       obj[this._posMaxKey()] = max;
+      var additionalStyles = this.props.barStyles;
+      if (additionalStyles && additionalStyles[i]) {
+        Object.keys(additionalStyles[i]).forEach(function(option) {
+          obj[option] = additionalStyles[i][option];
+        })
+      }
       return obj;
     },
 
@@ -797,7 +810,7 @@
             self['bar' + i] = r;
           },
           className: this.props.barClassName + ' ' + this.props.barClassName + '-' + i,
-          style: this._buildBarStyle(offsetFrom, this.state.upperBound - offsetTo)
+          style: this._buildBarStyle(i, offsetFrom, this.state.upperBound - offsetTo)
         })
       );
     },
